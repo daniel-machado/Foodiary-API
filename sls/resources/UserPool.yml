@@ -31,6 +31,11 @@ Resources:
         PreTokenGenerationConfig:
           LambdaArn: !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${self:service}-${self:provider.stage}-preTokenGenerationTrigger'
           LambdaVersion: V2_0
+      #EmailConfiguration:
+      #  EmailSendingAccount: DEVELOPER
+      #  From: 'daniel7oficial@gmail.com'
+      #  ReplyToEmailAddress: 'daniel7oficial@gmail.com'
+      #  SourceArn: 'arn:aws:ses:sa-east-1:803452627826:identity/daniel_oficial@outlook.com'
 
   PreTokenGenerationLambdaPermission:
     Type: AWS::Lambda::Permission

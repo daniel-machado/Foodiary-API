@@ -37,6 +37,7 @@ functions:
   - ${file(./sls/functions/meals.yml)}
 
 resources:
+# - ${file(./sls/resources/APIGWCustomDomain.yml)}
   - ${file(./sls/resources/UserPool.yml)}
   - ${file(./sls/resources/MainTable.yml)}
 
