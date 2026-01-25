@@ -1,5 +1,5 @@
 import { Account } from '@application/entities/Account';
-import { PutCommand, QueryCommand } from '@aws-sdk/lib-dynamodb';
+import { PutCommand, PutCommandInput, QueryCommand } from '@aws-sdk/lib-dynamodb';
 import { dynamoClient } from '@infra/clients/dynamoClient';
 import { Injectable } from '@kernel/decorators/Injectable';
 import { AppConfig } from '@shared/config/AppConfig';
@@ -7,8 +7,7 @@ import { AccountItem } from '../items/AccountItem';
 
 @Injectable()
 export class AccountRepository {
-
-  constructor(private readonly config: AppConfig){}
+  constructor(private readonly config: AppConfig) {}
 
   async findByEmail(email: string): Promise<Account | null> {
     const command = new QueryCommand({
@@ -36,14 +35,18 @@ export class AccountRepository {
     return AccountItem.toEntity(account);
   }
 
-  async create(account: Account): Promise<void> {
+  getPutCommandInput(account: Account): PutCommandInput {
     const accountItem = AccountItem.fromEntity(account);
 
-    const command = new PutCommand({
+    return {
       TableName: this.config.db.dynamodb.mainTable,
       Item: accountItem.toItem(),
-    });
+    };
+  }
 
-    await dynamoClient.send(command);
+  async create(account: Account): Promise<void> {
+    await dynamoClient.send(
+      new PutCommand(this.getPutCommandInput(account)),
+    );
   }
 }

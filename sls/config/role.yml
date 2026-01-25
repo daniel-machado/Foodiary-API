@@ -3,6 +3,11 @@ statements:
     Action:
       - dynamodb:PutItem
       - dynamodb:Query
+      - dynamodb:GetItem
+      - dynamodb:UpdateItem
     Resource:
       - !GetAtt MainTable.Arn
       - !Sub '${MainTable.Arn}/index/*'
+  - Effect: Allow
+    Action: cognito-idp:AdminDeleteUser
+    Resource: !GetAtt UserPool.Arn
